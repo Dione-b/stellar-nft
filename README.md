@@ -170,6 +170,7 @@ Before using the Makefile, ensure you have:
 
 ## Deployment
 
+
 Build the contract:
 
 ```bash
@@ -178,31 +179,27 @@ make build
 stellar contract build --package nft
 ```
 
-Deploy the contract with constructor arguments:
-
-```bash
-make deploy \
-  NETWORK=testnet \
-  SOURCE=$IDENTITY \
-  CONTRACT_SYMBOL=COLLECTION \
-  CONTRACT_URI=https://ipfs.io/ipfs/your-metadata-uri \
-  CONTRACT_MAX_SUPPLY=10000
-```
-
-Or manually deploy:
+Deploy the contract with required constructor arguments:
 
 ```bash
 stellar contract deploy \
-  --wasm target/wasm32v1-none/release/nft.wasm \
   --network testnet \
-  --source $IDENTITY \
+  --source-account your_account_address \
+  --wasm ../../target/wasm32-unknown-unknown/release/stellar_nft.wasm \
   -- \
-  --owner $IDENTITY \
-  --name "Your Collection Name" \
-  --symbol COLLECTION \
-  --uri https://ipfs.io/ipfs/your-metadata-uri \
-  --max-supply 10000
+  --owner your_account_address \
+  --max-supply 10000 \
+  --metadata '{"name":"My bests nfts","symbol":"BEST","base_uri":"https://ipfs.io/ipfs/to-be-replaced"}'
 ```
+
+The `--metadata` argument must be passed as a JSON string, containing the following fields:
+- `name`: collection name
+- `symbol`: token symbol
+- `base_uri`: base URI for metadata
+
+### Versions used
+- soroban-sdk: **22.0.8**
+- stellar-cli: **23.0.0**
 
 ### Contract Features
 
